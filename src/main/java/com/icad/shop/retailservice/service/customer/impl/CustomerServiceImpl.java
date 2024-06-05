@@ -15,10 +15,14 @@ import com.icad.shop.retailservice.model.Customer;
 import com.icad.shop.retailservice.repository.CustomerRepository;
 import com.icad.shop.retailservice.service.customer.iservice.CustomerService;
 import com.icad.shop.retailservice.util.customer.CustomerMapperUtil;
+import com.icad.shop.retailservice.util.logger.LoggerUtil;
 import com.icad.shop.retailservice.util.logger.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -26,12 +30,14 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     private final CustomerMapperUtil customerMapperUtil;
+    private final LoggerUtil loggerUtil;
 
     @Override
     public ResponseDto<CustomerListResponse> customerDataList(CustomerListRequest request, HttpServletRequest httpServletRequest) {
@@ -45,9 +51,9 @@ public class CustomerServiceImpl implements CustomerService {
             }
 
             Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), request.getSortBy());
-            Pageable pageable = Pageable.unpaged(sort);
+            Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize(), sort);
 
-            Page<Customer> customerPage = customerRepository.findAll(true, pageable);
+            Page<Customer> customerPage = customerRepository.findAllByIsActive(true, pageable);
 
             return ResponseUtil.success(
                     StatusConstant.SUCCESS,
@@ -56,6 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
                     customerMapperUtil.customerPageToCustomerListResponse(customerPage)
             );
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.RETRIEVE_DATA,

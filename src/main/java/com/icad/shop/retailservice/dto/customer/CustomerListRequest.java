@@ -1,20 +1,20 @@
 package com.icad.shop.retailservice.dto.customer;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.icad.shop.retailservice.dto.common.Filter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerListRequest implements Serializable {
+public class CustomerListRequest extends Filter implements Serializable {
     @Serial
-    private static final long serialVersionUID = -606867853688800466L;
+    private static final long serialVersionUID = -2857079491245817175L;
 
     private String startDate;
     private String endDate;
