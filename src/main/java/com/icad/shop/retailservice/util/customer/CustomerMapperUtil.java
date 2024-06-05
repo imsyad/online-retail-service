@@ -54,4 +54,12 @@ public class CustomerMapperUtil {
                 .pic(customerUpdateRequest.getPic())
                 .build();
     }
+
+    public void updateCustomerData(Customer customer, CustomerUpdateRequest customerUpdateRequest) {
+        customer.setCustomerName(customerUpdateRequest.getCustomerName());
+        customer.setCustomerAddress(customerUpdateRequest.getCustomerAddress());
+        customer.setCustomerPhone(customerUpdateRequest.getCustomerPhone());
+        customer.setCustomerCode(customerUpdateRequest.getCustomerCode());
+        customer.setPic(customer.getPic());
+    }
 }
