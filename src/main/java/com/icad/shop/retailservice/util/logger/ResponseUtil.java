@@ -24,6 +24,10 @@ public class ResponseUtil {
         return success(code, message, icon, null);
     }
 
+    public static <T> ResponseDto<T> success(String code, String message, T result) {
+        return success(code, message, null, result);
+    }
+
     public static <T> ResponseDto<T> success(String code, String message, String icon, T result) {
         ResponseDto<T> response = new ResponseDto<>();
         response.setCode(code);

@@ -1,5 +1,8 @@
 package com.icad.shop.retailservice.controller;
 
+import com.icad.shop.retailservice.constant.common.ActivityConstant;
+import com.icad.shop.retailservice.constant.customer.CheckCustomerEnum;
+import com.icad.shop.retailservice.dto.customer.CustomerCheckRequest;
 import com.icad.shop.retailservice.dto.customer.CustomerListRequest;
 import com.icad.shop.retailservice.dto.customer.CustomerListResponse;
 import com.icad.shop.retailservice.dto.customer.CustomerUpdateRequest;
@@ -23,8 +26,18 @@ public class CustomerController {
         return customerService.customerDataList(request, httpServletRequest);
     }
 
-    @PostMapping("/update")
-    public ResponseDto<String> updateCustomerData(@RequestBody CustomerUpdateRequest request, HttpServletRequest httpServletRequest) {
-        return customerService.updateCustomerData(request, httpServletRequest);
+    @PostMapping("/add")
+    public ResponseDto<String> addCustomerData(@RequestBody CustomerUpdateRequest request, HttpServletRequest httpServletRequest) {
+        return customerService.updateCustomerData(request, ActivityConstant.ADD, httpServletRequest);
+    }
+
+    @PostMapping("/edit")
+    public ResponseDto<String> editCustomerData(@RequestBody CustomerUpdateRequest request, HttpServletRequest httpServletRequest) {
+        return customerService.updateCustomerData(request, ActivityConstant.EDIT, httpServletRequest);
+    }
+
+    @PostMapping("/check-customer")
+    public ResponseDto<CheckCustomerEnum> checkCustomerData(@RequestBody CustomerCheckRequest request, HttpServletRequest httpServletRequest) {
+        return customerService.checkCustomerData(request, httpServletRequest);
     }
 }
