@@ -1,5 +1,6 @@
 package com.icad.shop.retailservice.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,10 @@ import java.io.Serializable;
 public class StatusResponseDto implements Serializable {
     @Serial
     private static final long serialVersionUID = -4460358170564571220L;
+    @JsonProperty(index = 1)
     private String code;
-    private String icon;
+    @JsonProperty(index = 2)
     private String message;
+    @JsonProperty(index = 3)
+    private String icon;
 }
