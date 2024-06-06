@@ -15,7 +15,6 @@ import com.icad.shop.retailservice.util.customer.CustomerMapperUtil;
 import com.icad.shop.retailservice.util.logger.LoggerUtil;
 import com.icad.shop.retailservice.util.logger.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -50,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
             Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), request.getSortBy());
             Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize(), sort);
 
-            Page<Customer> customerPage = customerRepository.findAllByIsActive(true, pageable);
+            Page<Customer> customerPage = customerRepository.findAll(pageable);
 
             return ResponseUtil.success(
                     StatusConstant.SUCCESS,
@@ -193,7 +192,12 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setIsActive(false);
             customerRepository.save(customer);
 
-            return ResponseUtil.success();
+            return ResponseUtil.success(
+                    StatusConstant.SUCCESS,
+                    MessageConstant.SuccessResponse.DELETE_CUSTOMER_DATA,
+                    IconConstant.SUCCESS,
+                    CustomerConstant.ResponseMessage.SUCCESS_DELETE_DATA
+            );
         } catch (Exception e) {
             return ResponseUtil.success(
                     StatusConstant.FAILED,

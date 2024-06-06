@@ -32,8 +32,8 @@ public class Item {
     @Column(name = "items_name")
     private String itemsName;
 
-    @Column(name = "last_re_date")
-    private LocalDate lastReDate;
+    @Column(name = "last_re_stock")
+    private LocalDate lastReStock;
 
     @Column(name = "price", nullable = false, precision = 19, scale = 2)
     private BigDecimal price;
