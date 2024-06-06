@@ -2,10 +2,7 @@ package com.icad.shop.retailservice.controller;
 
 import com.icad.shop.retailservice.constant.common.ActivityConstant;
 import com.icad.shop.retailservice.constant.customer.CheckCustomerEnum;
-import com.icad.shop.retailservice.dto.customer.CustomerCheckRequest;
-import com.icad.shop.retailservice.dto.customer.CustomerListRequest;
-import com.icad.shop.retailservice.dto.customer.CustomerListResponse;
-import com.icad.shop.retailservice.dto.customer.CustomerUpdateRequest;
+import com.icad.shop.retailservice.dto.customer.*;
 import com.icad.shop.retailservice.dto.response.ResponseDto;
 import com.icad.shop.retailservice.service.customer.iservice.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,6 +31,11 @@ public class CustomerController {
     @PostMapping("/edit")
     public ResponseDto<String> editCustomerData(@RequestBody CustomerUpdateRequest request, HttpServletRequest httpServletRequest) {
         return customerService.updateCustomerData(request, ActivityConstant.EDIT, httpServletRequest);
+    }
+
+    @PostMapping("/delete")
+    public ResponseDto<String> deleteCustomerData(@RequestBody CustomerDeleteRequest request, HttpServletRequest httpServletRequest) {
+        return customerService.deleteCustomerData(request, httpServletRequest);
     }
 
     @PostMapping("/check-customer")

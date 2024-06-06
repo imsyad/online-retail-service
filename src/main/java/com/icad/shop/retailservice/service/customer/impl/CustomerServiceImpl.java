@@ -6,10 +6,7 @@ import com.icad.shop.retailservice.constant.customer.CustomerConstant;
 import com.icad.shop.retailservice.constant.logger.IconConstant;
 import com.icad.shop.retailservice.constant.logger.MessageConstant;
 import com.icad.shop.retailservice.constant.logger.StatusConstant;
-import com.icad.shop.retailservice.dto.customer.CustomerCheckRequest;
-import com.icad.shop.retailservice.dto.customer.CustomerListRequest;
-import com.icad.shop.retailservice.dto.customer.CustomerListResponse;
-import com.icad.shop.retailservice.dto.customer.CustomerUpdateRequest;
+import com.icad.shop.retailservice.dto.customer.*;
 import com.icad.shop.retailservice.dto.response.ResponseDto;
 import com.icad.shop.retailservice.model.Customer;
 import com.icad.shop.retailservice.repository.CustomerRepository;
@@ -65,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
             log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
-                    MessageConstant.FailedResponse.RETRIEVE_DATA,
+                    MessageConstant.FailedResponse.UNEXPECTED_ERROR,
                     IconConstant.FAILED
             );
         }
@@ -131,8 +128,9 @@ public class CustomerServiceImpl implements CustomerService {
         } catch (Exception e) {
             return ResponseUtil.success(
                     StatusConstant.FAILED,
-                    MessageConstant.FailedResponse.UPDATE_DATA,
-                    IconConstant.FAILED
+                    MessageConstant.FailedResponse.UNEXPECTED_ERROR,
+                    IconConstant.FAILED,
+                    MessageConstant.FailedResponse.UNEXPECTED_ERROR
             );
         }
     }
@@ -175,7 +173,34 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseDto<String> deleteCustomerData(String a, HttpServletRequest httpServletRequest) {
-        return null;
+    public ResponseDto<String> deleteCustomerData(CustomerDeleteRequest request, HttpServletRequest httpServletRequest) {
+        try {
+            if(Objects.isNull(request)) {
+                return ResponseUtil.success();
+            }
+
+            Optional<Customer> optionalCustomer =  customerRepository.findByIdAndIsActive(request.getCustomerId(), true);
+            if (optionalCustomer.isEmpty()) {
+                return ResponseUtil.success(
+                        StatusConstant.FAILED,
+                        MessageConstant.FailedResponse.DELETE_CUSTOMER_DATA,
+                        IconConstant.FAILED,
+                        CustomerConstant.ResponseMessage.FAILED_DELETE_DATA_DOES_NOT_EXIST
+                );
+            }
+
+            Customer customer = optionalCustomer.get();
+            customer.setIsActive(false);
+            customerRepository.save(customer);
+
+            return ResponseUtil.success();
+        } catch (Exception e) {
+            return ResponseUtil.success(
+                    StatusConstant.FAILED,
+                    MessageConstant.FailedResponse.UNEXPECTED_ERROR,
+                    IconConstant.FAILED,
+                    MessageConstant.FailedResponse.UNEXPECTED_ERROR
+            );
+        }
     }
 }
