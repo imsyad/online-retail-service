@@ -19,6 +19,7 @@ public class MessageConstant {
         public static final String CHECK_CUSTOMER_DATA = "Failed to Check Customer Data";
         public static final String DELETE_CUSTOMER_DATA = "Failed to Delete Customer Data";
         public static final String DELETE_DATA = "Failed to Delete Data";
+        public static final String CREATE_ORDER = "Failed to Create Order";
 
 
         private FailedResponse() {

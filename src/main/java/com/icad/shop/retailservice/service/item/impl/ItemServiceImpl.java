@@ -91,7 +91,7 @@ public class ItemServiceImpl implements ItemService {
                         .itemsCode(request.getItemsCode())
                         .price(request.getPrice())
                         .stock(request.getStock())
-                        .isAvailable(Integer.valueOf(0).equals(BigDecimal.ZERO.compareTo(request.getStock())))
+                        .isAvailable(Integer.valueOf(1).equals(BigDecimal.ZERO.compareTo(request.getStock())))
                         .lastReStock(LocalDate.now(ZoneId.of("Asia/Jakarta")))
                         .build();
             } else {
@@ -119,9 +119,9 @@ public class ItemServiceImpl implements ItemService {
                 item.setItemsName(request.getItemsName());
                 item.setItemsCode(request.getItemsCode());
                 item.setPrice(request.getPrice());
-                item.setIsAvailable(Integer.valueOf(0).equals(BigDecimal.ZERO.compareTo(request.getStock())));
+                item.setIsAvailable(Integer.valueOf(1).equals(BigDecimal.ZERO.compareTo(request.getStock())));
                 // If the edit request and the current item stock is different, update the last restock value with current date
-                if (!Integer.valueOf(0).equals(request.getStock().compareTo(item.getStock()))) {
+                if (Integer.valueOf(1).equals(request.getStock().compareTo(item.getStock()))) {
                     item.setLastReStock(LocalDate.now(ZoneId.of("Asia/Jakarta")));
                 }
                 item.setStock(request.getStock());
