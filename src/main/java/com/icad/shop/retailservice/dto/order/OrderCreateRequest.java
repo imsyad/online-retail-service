@@ -15,11 +15,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderCreateRequest implements Serializable {
     @Serial
-    private static final long serialVersionUID = -7350871940008169869L;
+    private static final long serialVersionUID = -4371376844935064462L;
 
     private long customerCode;
     private long itemCode;
     private BigDecimal quantity;
-    private BigDecimal itemPrice;
-
 }

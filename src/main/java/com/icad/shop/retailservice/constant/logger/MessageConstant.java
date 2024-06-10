@@ -7,6 +7,7 @@ public class MessageConstant {
         public static final String UPDATE_DATA = "Successfully Update Data";
         public static final String DELETE_CUSTOMER_DATA = "Successfully Delete Customer Data";
         public static final String DELETE_DATA = "Failed to Delete Data";
+        public static final String CREATE_ORDER = "Successfully Create Order";
 
         private SuccessResponse() {
         }

@@ -125,6 +125,7 @@ public class CustomerServiceImpl implements CustomerService {
                     ActivityConstant.ADD.equalsIgnoreCase(action) ? CustomerConstant.ResponseMessage.SUCCESS_ADD_DATA : CustomerConstant.ResponseMessage.SUCCESS_EDIT_DATA
             );
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.UNEXPECTED_ERROR,
@@ -163,6 +164,7 @@ public class CustomerServiceImpl implements CustomerService {
                     CheckCustomerEnum.NOT_AVAILABLE
             );
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.CHECK_CUSTOMER_DATA,
@@ -199,6 +201,7 @@ public class CustomerServiceImpl implements CustomerService {
                     CustomerConstant.ResponseMessage.SUCCESS_DELETE_DATA
             );
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.UNEXPECTED_ERROR,

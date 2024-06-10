@@ -14,9 +14,11 @@ import com.icad.shop.retailservice.model.Item;
 import com.icad.shop.retailservice.repository.ItemRepository;
 import com.icad.shop.retailservice.service.item.iservice.ItemService;
 import com.icad.shop.retailservice.util.item.ItemMapperUtil;
+import com.icad.shop.retailservice.util.logger.LoggerUtil;
 import com.icad.shop.retailservice.util.logger.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,9 +33,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapperUtil itemMapperUtil;
+    private final LoggerUtil loggerUtil;
 
     @Override
     public ResponseDto<ItemListResponse> listItemData(ItemListRequest request, HttpServletRequest httpServletRequest) {
@@ -55,6 +59,7 @@ public class ItemServiceImpl implements ItemService {
                     IconConstant.SUCCESS,
                     itemMapperUtil.mapItemListResponse(items));
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.UNEXPECTED_ERROR,
@@ -91,7 +96,7 @@ public class ItemServiceImpl implements ItemService {
                         .itemsCode(request.getItemsCode())
                         .price(request.getPrice())
                         .stock(request.getStock())
-                        .isAvailable(Integer.valueOf(1).equals(BigDecimal.ZERO.compareTo(request.getStock())))
+                        .isAvailable(Integer.valueOf(-1).equals(BigDecimal.ZERO.compareTo(request.getStock())))
                         .lastReStock(LocalDate.now(ZoneId.of("Asia/Jakarta")))
                         .build();
             } else {
@@ -119,7 +124,7 @@ public class ItemServiceImpl implements ItemService {
                 item.setItemsName(request.getItemsName());
                 item.setItemsCode(request.getItemsCode());
                 item.setPrice(request.getPrice());
-                item.setIsAvailable(Integer.valueOf(1).equals(BigDecimal.ZERO.compareTo(request.getStock())));
+                item.setIsAvailable(Integer.valueOf(-1).equals(BigDecimal.ZERO.compareTo(request.getStock())));
                 // If the edit request and the current item stock is different, update the last restock value with current date
                 if (Integer.valueOf(1).equals(request.getStock().compareTo(item.getStock()))) {
                     item.setLastReStock(LocalDate.now(ZoneId.of("Asia/Jakarta")));
@@ -136,6 +141,7 @@ public class ItemServiceImpl implements ItemService {
                     ActivityConstant.ADD.equalsIgnoreCase(action) ? ItemConstant.ResponseMessage.SUCCESS_ADD_DATA : ItemConstant.ResponseMessage.SUCCESS_EDIT_DATA
             );
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.UNEXPECTED_ERROR,
@@ -177,6 +183,7 @@ public class ItemServiceImpl implements ItemService {
             );
 
         } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
             return ResponseUtil.success(
                     StatusConstant.FAILED,
                     MessageConstant.FailedResponse.UNEXPECTED_ERROR,

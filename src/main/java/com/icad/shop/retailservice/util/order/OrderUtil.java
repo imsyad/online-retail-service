@@ -1,17 +1,16 @@
 package com.icad.shop.retailservice.util.order;
 
-import com.icad.shop.retailservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class OrderUtil {
-    private final OrderRepository orderRepository;
 
     public String generateOrderCode() {
-        return "T-" + LocalDate.now() + orderRepository.getLastRecordId();
+        return "T-" + LocalDate.now() + UUID.randomUUID();
     }
 }
