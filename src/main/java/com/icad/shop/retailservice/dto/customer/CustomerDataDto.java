@@ -15,11 +15,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CustomerDataDto implements Serializable {
     @Serial
-    private static final long serialVersionUID = -9121060011708935620L;
+    private static final long serialVersionUID = 2225590307676500405L;
 
     private Long customerId;
     private String customerName;
     private String customerAddress;
+    private String customerCode;
+    private String customerPhone;
+    private String pic;
     private LocalDate lastOrderDate;
     private Boolean isActive;
 }
