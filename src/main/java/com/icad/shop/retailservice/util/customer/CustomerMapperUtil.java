@@ -33,9 +33,12 @@ public class CustomerMapperUtil {
         customerDataDtoList = customerList.stream().map(
                 customer ->
                         CustomerDataDto.builder()
-                                .customerAddress(customer.getCustomerAddress())
                                 .customerId(customer.getId())
                                 .customerName(customer.getCustomerName())
+                                .customerCode(customer.getCustomerCode())
+                                .customerAddress(customer.getCustomerAddress())
+                                .customerPhone(customer.getCustomerPhone())
+                                .pic(customer.getPic())
                                 .lastOrderDate(customer.getLastOrderDate())
                                 .isActive(customer.getIsActive())
                                 .build()
@@ -60,6 +63,6 @@ public class CustomerMapperUtil {
         customer.setCustomerAddress(customerUpdateRequest.getCustomerAddress());
         customer.setCustomerPhone(customerUpdateRequest.getCustomerPhone());
         customer.setCustomerCode(customerUpdateRequest.getCustomerCode());
-        customer.setPic(customer.getPic());
+        customer.setPic(customerUpdateRequest.getPic());
     }
 }
