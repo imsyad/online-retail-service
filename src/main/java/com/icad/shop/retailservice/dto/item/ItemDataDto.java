@@ -16,10 +16,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ItemDataDto implements Serializable {
     @Serial
-    private static final long serialVersionUID = -5274861163945559197L;
+    private static final long serialVersionUID = -6740485482791876566L;
 
     private long itemsId;
-    private String itemName;
+    private String itemsName;
     private String itemsCode;
     private Boolean isAvailable;
     private LocalDate lastReStock;

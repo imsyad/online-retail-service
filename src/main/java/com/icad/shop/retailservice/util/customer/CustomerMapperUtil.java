@@ -18,11 +18,6 @@ public class CustomerMapperUtil {
         }
 
         CustomerListResponse customerListResponse = new CustomerListResponse();
-
-        customerListResponse.setPageNumber(customerPage.getNumber());
-        customerListResponse.setPageSize(customerPage.getSize());
-        customerListResponse.setTotalPages(customerPage.getTotalPages());
-        customerListResponse.setTotalElements(customerPage.getTotalElements());
         customerListResponse.setCustomerList(mapListCustomerToListCustomerDataDto(customerPage.get().toList()));
 
         return customerListResponse;

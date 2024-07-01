@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -46,10 +45,20 @@ public class CustomerServiceImpl implements CustomerService {
                 );
             }
 
-            Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), request.getSortBy());
-            Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize(), sort);
+            String sortBy;
+            switch (request.getSortBy()) {
+                case "customerCode" -> sortBy = "customer_code";
+                case "customerName" -> sortBy = "customer_name";
+                case "customerAddress" -> sortBy = "customer_address";
+                case "customerPhone" -> sortBy = "customer_phone";
+                case "lastOrderDate" -> sortBy = "last_order_date";
+                default -> sortBy = request.getSortBy();
+            }
 
-            Page<Customer> customerPage = customerRepository.findAll(pageable);
+            Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), sortBy);
+            Pageable pageable = Pageable.unpaged(sort);
+
+            Page<Customer> customerPage = customerRepository.findByCustomerFilter(request.getSearch().toLowerCase(), pageable);
 
             return ResponseUtil.success(
                     StatusConstant.SUCCESS,
@@ -176,11 +185,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseDto<String> deleteCustomerData(CustomerDeleteRequest request, HttpServletRequest httpServletRequest) {
         try {
-            if(Objects.isNull(request)) {
+            if (Objects.isNull(request)) {
                 return ResponseUtil.success();
             }
 
-            Optional<Customer> optionalCustomer =  customerRepository.findByIdAndIsActive(request.getCustomerId(), true);
+            Optional<Customer> optionalCustomer = customerRepository.findByIdAndIsActive(request.getCustomerId(), true);
             if (optionalCustomer.isEmpty()) {
                 return ResponseUtil.success(
                         StatusConstant.FAILED,
