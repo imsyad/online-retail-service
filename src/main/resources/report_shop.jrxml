@@ -28,10 +28,6 @@
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Order Shop Report]]></text>
 			</staticText>
-			<staticText>
-				<reportElement style="SubTitle" x="0" y="46" width="157" height="22" uuid="8e16dabd-2e54-471b-9652-83e1d55379ec"/>
-				<text><![CDATA[Per ]]></text>
-			</staticText>
 		</band>
 	</title>
 	<pageHeader>
