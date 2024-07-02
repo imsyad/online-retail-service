@@ -32,7 +32,7 @@ public class ItemMapperUtil {
         return ItemDataDto.builder()
                 .itemsId(item.getId())
                 .itemsCode(item.getItemsCode())
-                .itemName(item.getItemsName())
+                .itemsName(item.getItemsName())
                 .price(item.getPrice())
                 .stock(item.getStock())
                 .lastReStock(item.getLastReStock())

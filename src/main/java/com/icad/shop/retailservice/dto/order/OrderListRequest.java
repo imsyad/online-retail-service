@@ -14,11 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class OrderListRequest extends Filter implements Serializable {
     @Serial
-    private static final long serialVersionUID = -1026542974861952586L;
+    private static final long serialVersionUID = -701468976114917207L;
 
-    private long customerId;
-    private long itemId;
-    private long orderId;
     private String sortBy;
     private String sortDir;
 }

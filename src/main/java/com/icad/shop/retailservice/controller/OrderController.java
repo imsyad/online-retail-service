@@ -5,6 +5,7 @@ import com.icad.shop.retailservice.dto.order.OrderListRequest;
 import com.icad.shop.retailservice.dto.response.ResponseDto;
 import com.icad.shop.retailservice.service.order.iservice.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,5 +27,10 @@ public class OrderController {
     @PostMapping("/create")
     public ResponseDto<Object> createOrder(@RequestBody OrderCreateRequest request, HttpServletRequest httpServletRequest) {
         return orderService.createOrder(request, httpServletRequest);
+    }
+
+    @PostMapping("/export")
+    public ResponseDto<Object> exportOrder(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        return orderService.exportOrder(httpServletRequest, httpServletResponse);
     }
 }

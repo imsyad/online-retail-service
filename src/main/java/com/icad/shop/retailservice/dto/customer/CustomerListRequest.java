@@ -16,8 +16,6 @@ public class CustomerListRequest extends Filter implements Serializable {
     @Serial
     private static final long serialVersionUID = -2857079491245817175L;
 
-    private String startDate;
-    private String endDate;
     private String sortBy;
     private String sortDir;
 }

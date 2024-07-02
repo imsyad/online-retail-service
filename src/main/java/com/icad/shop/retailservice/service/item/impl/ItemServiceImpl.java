@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -49,9 +48,16 @@ public class ItemServiceImpl implements ItemService {
                         IconConstant.FAILED);
             }
 
-            Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), request.getSortBy());
-            Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize(), sort);
-            Page<Item> items = itemRepository.findAll(pageable);
+            String sortBy;
+            switch (request.getSortBy()) {
+               case "itemsName" -> sortBy = "items_name";
+               case "itemsCode" -> sortBy = "items_code";
+               default -> sortBy = request.getSortBy();
+            }
+
+            Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), sortBy);
+            Pageable pageable = Pageable.unpaged(sort);
+            Page<Item> items = itemRepository.findByItemFilter(request.getSearch(), pageable);
 
             return ResponseUtil.success(
                     StatusConstant.SUCCESS,

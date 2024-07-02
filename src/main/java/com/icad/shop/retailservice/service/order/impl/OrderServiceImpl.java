@@ -20,17 +20,18 @@ import com.icad.shop.retailservice.util.logger.ResponseUtil;
 import com.icad.shop.retailservice.util.order.OrderMapperUtil;
 import com.icad.shop.retailservice.util.order.OrderUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -58,8 +59,8 @@ public class OrderServiceImpl implements OrderService {
             }
 
             Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), request.getSortBy());
-            Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize(), sort);
-            Page<OrderDataPojo> orders = orderRepository.findOrderDetails(pageable);
+            Pageable pageable = Pageable.unpaged(sort);
+            Page<OrderDataPojo> orders = orderRepository.findOrderDetails(request.getSearch(), pageable);
 
             return ResponseUtil.success(
                     StatusConstant.SUCCESS,
@@ -67,9 +68,31 @@ public class OrderServiceImpl implements OrderService {
                     IconConstant.SUCCESS,
                     orderMapperUtil.mapToOrderListResponse(orders)
             );
-        } catch(Exception e) {
+        } catch (Exception e) {
             loggerUtil.getStackTrace(e);
             return ResponseUtil.success();
+        }
+    }
+
+    @Override
+    public ResponseDto<Object> exportOrder(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        try {
+            httpServletResponse.setContentType("application/pdf");
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String currentDate = df.format(LocalDate.now());
+            String headerKey = "Content-Disposition";
+            String headerValue = String.format("attachment; filename=\"pdf_%s\".pdf", currentDate);
+            httpServletResponse.setHeader(headerKey, headerValue);
+            orderUtil.exportJasperReport(httpServletResponse);
+            return ResponseUtil.success();
+        } catch (Exception e) {
+            log.error("{}", loggerUtil.getStackTrace(e));
+            return ResponseUtil.success(
+                    StatusConstant.FAILED,
+                    OrderConstant.ResponseMessage.FAILED_CREATE_ORDER,
+                    IconConstant.FAILED,
+                    loggerUtil.getStackTrace(e)
+            );
         }
     }
 
